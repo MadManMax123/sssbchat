@@ -14,7 +14,7 @@ function logout() {
 }
 
 // Config
-const webhookURL = "https://webhook-test.com/ad3a539d755faa557c8b0159ca95ce21"; // Replace with your Make.com webhook
+const webhookURL = "https://hook.us1.make.com/zlo4cpb5i98dr4gpict4c2bp2w0ah01y"; // Replace with your Make.com webhook
 const sheetURL   = "https://script.google.com/macros/s/AKfycbxlKaKV930SHWMd46-uUWrRe5tEyJs1-irUnzzF9jfLrkqWxZQ_OeZuOfw5zIsNOkzR/exec"; // Replace with published Google Sheet JSON
 
 // Send message
