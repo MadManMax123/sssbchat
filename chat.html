@@ -9,7 +9,7 @@
 <body>
   <div class="sidebar">
     <ul>
-      <li><a href="chat.html">Chat</a></li>
+      <li><a href="chat.html" class="active">Chat</a></li>
       <li><a href="customise.html">Customise</a></li>
       <li><a href="placeholder2.html">Page 2</a></li>
       <li><a href="index.html" onclick="logout()">Logout</a></li>
@@ -20,7 +20,7 @@
     <h2>Welcome, <span id="user-name"></span></h2>
     <div id="chat-box" class="chat-box"></div>
     <div class="chat-input">
-      <input type="text" id="message" placeholder="Type your message...">
+      <input type="text" id="message" placeholder="Type your message..." onkeypress="if(event.key==='Enter'){sendMessage()}">
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
@@ -28,5 +28,12 @@
   <script src="js/chat.js"></script>
   <script src="js/sidebar.js"></script>
 
+  <!-- ✅ Immediately render messages on page load -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      loadMessages();
+      setInterval(loadMessages, 1000); // keep refreshing every second
+    });
+  </script>
 </body>
 </html>
