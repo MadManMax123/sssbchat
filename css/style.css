@@ -83,6 +83,14 @@ body {
   box-shadow: 0 2px 8px rgba(44,62,80,0.08);
   position: relative;
   word-break: break-word;
+  transition: 
+    box-shadow 0.2s cubic-bezier(.4,2,.6,1), 
+    transform 0.18s cubic-bezier(.4,2,.6,1);
+}
+.chat-bubble:hover {
+  box-shadow: 0 0 18px 2px rgba(26,188,156,0.18), 0 2px 16px rgba(44,62,80,0.13);
+  transform: scale(1.045) translateY(-2px);
+  z-index: 2;
 }
 .chat-message.right .chat-bubble {
   background: var(--bubble-bg-right, #1abc9c);

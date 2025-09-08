@@ -27,5 +27,11 @@
 
   <script src="js/chat.js"></script>
   <script src="js/sidebar.js"></script>
+  <script>
+    // Redirect to login if not logged in
+    if (!sessionStorage.getItem('user')) {
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>

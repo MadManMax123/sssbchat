@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +44,23 @@
   </div>
 
   <script>
+    // Redirect to login if not logged in
+    if (!sessionStorage.getItem('user')) {
+      window.location.href = 'index.html';
+    }
+
+    // Live preview of customisation
+    function applyCustomisation() {
+      document.documentElement.style.setProperty('--bubble-bg-right', document.getElementById('bubbleBgRight').value);
+      document.documentElement.style.setProperty('--bubble-color-right', document.getElementById('bubbleColorRight').value);
+      document.documentElement.style.setProperty('--bubble-bg-left', document.getElementById('bubbleBgLeft').value);
+      document.documentElement.style.setProperty('--bubble-color-left', document.getElementById('bubbleColorLeft').value);
+    }
+    ['bubbleBgRight','bubbleColorRight','bubbleBgLeft','bubbleColorLeft'].forEach(id => {
+      document.getElementById(id).addEventListener('input', applyCustomisation);
+    });
+    applyCustomisation();
+
     // Load saved settings
     const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
     if(settings.bubbleBgRight) document.getElementById('bubbleBgRight').value = settings.bubbleBgRight;
