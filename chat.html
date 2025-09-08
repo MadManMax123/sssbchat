@@ -28,15 +28,15 @@
   <script src="js/chat.js"></script>
   <script src="js/sidebar.js"></script>
   <script>
-    // Restore login from localStorage if needed
-    if (!sessionStorage.getItem('user')) {
-      const cached = localStorage.getItem('localLogin');
-      if (cached) {
-        sessionStorage.setItem('user', cached);
-      } else {
-        window.location.href = 'index.html';
-      }
+  // Restore login from localStorage if needed
+  if (!sessionStorage.getItem('user')) {
+    const cached = localStorage.getItem('localLogin');
+    if (cached) {
+      sessionStorage.setItem('user', cached);
+    } else {
+      window.location.href = 'index.html';
     }
-  </script>
+  }
+</script>
 </body>
 </html>
