@@ -1,4 +1,5 @@
 // =======================
+// =======================
 // Auto-login handling
 // =======================
 
@@ -17,11 +18,10 @@ const user = sessionStorage.getItem('user');
 const userNameEl = document.getElementById('user-name');
 if (userNameEl && user) userNameEl.textContent = user;
 
+// ✅ If we are on chat page, load messages immediately
 if (window.location.pathname.includes('chat.html')) {
-  document.addEventListener('DOMContentLoaded', () => {
-    loadMessages();
-    setInterval(loadMessages, 1000);
-  });
+  loadMessages();                    // first load immediately
+  setInterval(loadMessages, 3000);   // poll every 3s (not 1s — more efficient)
 }
 
 // =======================
