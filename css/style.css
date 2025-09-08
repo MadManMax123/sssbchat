@@ -274,6 +274,26 @@ body {
   background: linear-gradient(90deg, #16a085 0%, #1abc9c 100%);
 }
 
+.chat-msg {
+  padding: 8px;
+  margin: 5px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+  display: block;
+}
+
+.my-message {
+  background: #d1f7c4;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.other-message {
+  background: #f1f1f1;
+  align-self: flex-start;
+}
+
 @media screen and (max-width: 768px) {
   .sidebar {
     left: -220px;

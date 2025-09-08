@@ -1,4 +1,4 @@
-// Redirect if not logged in
+// Ensure user is logged in
 const user = sessionStorage.getItem('user');
 if (!user && window.location.pathname.includes('chat.html')) {
   window.location.href = 'index.html';
@@ -10,100 +10,69 @@ if (!user && window.location.pathname.includes('chat.html')) {
 // Logout
 function logout() {
   sessionStorage.clear();
-  window.location.href = 'index.html';
 }
 
-const sheetURL   = "https://script.google.com/macros/s/AKfycbxlKaKV930SHWMd46-uUWrRe5tEyJs1-irUnzzF9jfLrkqWxZQ_OeZuOfw5zIsNOkzR/exec"; // Replace with published Google Sheet JSON
-const webhookURL = sheetURL; 
+// CONFIG — replace with your URLs
+const webhookURL = "YOUR_MAKE_WEBHOOK_URL";   // Make.com webhook
+const sheetURL = "YOUR_APPS_SCRIPT_URL";      // Apps Script Web App URL (doGet)
 
-// Send message
+// Send a message
 async function sendMessage() {
-  const messageEl = document.getElementById('message');
-  const message = messageEl.value.trim();
+  const message = document.getElementById('message').value;
   if (!message) return;
 
-  const id = Date.now().toString();
-  const timestamp = new Date().toISOString();
+  const payload = {
+    id: crypto.randomUUID(),  // generate unique ID client-side
+    user: user,
+    message: message
+  };
 
+  // Send to Make.com webhook (which writes to Google Sheets)
   try {
     await fetch(webhookURL, {
       method: 'POST',
-      body: JSON.stringify({ id, timestamp, user, message }),
+      body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     });
-
-    messageEl.value = '';
-    loadMessages();
   } catch (err) {
-    console.error("Send failed:", err);
+    console.error("Webhook error:", err);
   }
+
+  // Clear input
+  document.getElementById('message').value = '';
+
+  // Refresh chat after sending
+  loadMessages();
 }
 
-// Custom bubble colors
-function getBubbleStyles(userName) {
-  const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
-  if (userName === user) {
-    // Current user (right)
-    return `--bubble-bg-right: ${settings.bubbleBgRight || '#1abc9c'}; --bubble-color-right: ${settings.bubbleColorRight || '#fff'};`;
-  } else {
-    // Other user (left)
-    return `--bubble-bg-left: ${settings.bubbleBgLeft || '#f1f8fb'}; --bubble-color-left: ${settings.bubbleColorLeft || '#232526'};`;
-  }
-}
-
-// Load messages
+// Load messages from Google Sheets JSON
 async function loadMessages() {
   try {
     const res = await fetch(sheetURL);
     const data = await res.json();
+    console.log("Fetched data:", data);
+
     const chatBox = document.getElementById('chat-box');
     if (!chatBox) return;
 
     chatBox.innerHTML = '';
-
     data.forEach(item => {
-      let timeStr = '';
-      if (item.timestamp) {
-        const date = new Date(item.timestamp);
-        timeStr = date.toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-      }
-
-      const side = item.user === user ? 'right' : 'left';
-      const bubbleStyles = getBubbleStyles(item.user);
-
+      const msgClass = item.user === user ? "my-message" : "other-message";
       chatBox.innerHTML += `
-        <div class="chat-message ${side}">
-          <div class="chat-user">${item.user}</div>
-          <div class="chat-bubble" style="${bubbleStyles}">
-            ${item.message}
-            ${item.user === user ? `<button class="delete-btn" onclick="deleteMessage('${item.id}')">🗑</button>` : ""}
-          </div>
-          <span class="chat-timestamp">${timeStr}</span>
+        <div class="chat-msg ${msgClass}">
+          <small>[${item.timestamp}]</small><br>
+          <strong>${item.user}:</strong> ${item.message}
         </div>
       `;
     });
 
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (err) {
-    console.error("Load failed:", err);
+    console.error("Error loading messages:", err);
   }
 }
 
-// Delete message
-async function deleteMessage(id) {
-  try {
-    await fetch(sheetURL, {
-      method: "POST",
-      body: JSON.stringify({ action: "delete", id }),
-      headers: { "Content-Type": "application/json" }
-    });
-    loadMessages();
-  } catch (err) {
-    console.error("Delete failed:", err);
-  }
-}
-
-// Auto-refresh
+// Auto-refresh chat every 5s
 if (window.location.pathname.includes('chat.html')) {
   loadMessages();
   setInterval(loadMessages, 5000);
