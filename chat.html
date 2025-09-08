@@ -28,9 +28,14 @@
   <script src="js/chat.js"></script>
   <script src="js/sidebar.js"></script>
   <script>
-    // Redirect to login if not logged in
+    // Restore login from localStorage if needed
     if (!sessionStorage.getItem('user')) {
-      window.location.href = 'index.html';
+      const cached = localStorage.getItem('localLogin');
+      if (cached) {
+        sessionStorage.setItem('user', cached);
+      } else {
+        window.location.href = 'index.html';
+      }
     }
   </script>
 </body>
