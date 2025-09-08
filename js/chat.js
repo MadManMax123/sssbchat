@@ -1,20 +1,27 @@
 // Ensure user is logged in and set user name
-let user = null;
+let user = sessionStorage.getItem('user');
+
+// ✅ Restore from localStorage if needed
+if (!user) {
+  const cached = localStorage.getItem('localLogin');
+  if (cached) {
+    user = cached;
+    sessionStorage.setItem('user', user);
+  }
+}
+
 if (window.location.pathname.includes('chat.html')) {
-  user = sessionStorage.getItem('user');
   if (!user) {
     window.location.href = 'index.html';
   } else {
     const userNameEl = document.getElementById('user-name');
     if (userNameEl) userNameEl.textContent = user;
 
-    // ✅ Load messages immediately
     loadMessages();
     setInterval(loadMessages, 5000);
   }
-} else {
-  user = sessionStorage.getItem('user');
 }
+
 
 // Logout
 function logout() {
