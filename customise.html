@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customise Chat</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <ul>
+      <li><a href="chat.html">Chat</a></li>
+      <li><a href="customise.html" class="active">Customise</a></li>
+      <li><a href="placeholder2.html">Page 2</a></li>
+      <li><a href="index.html" onclick="logout()">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="chat-container">
+    <div class="customise-container">
+      <h2>Customise Your Chat Bubbles</h2>
+      <form id="customise-form">
+        <div class="customise-row">
+          <label for="bubbleBgRight">My Bubble Background</label>
+          <input type="color" id="bubbleBgRight" value="#1abc9c">
+        </div>
+        <div class="customise-row">
+          <label for="bubbleColorRight">My Bubble Text</label>
+          <input type="color" id="bubbleColorRight" value="#ffffff">
+        </div>
+        <div class="customise-row">
+          <label for="bubbleBgLeft">Other Bubble Background</label>
+          <input type="color" id="bubbleBgLeft" value="#f1f8fb">
+        </div>
+        <div class="customise-row">
+          <label for="bubbleColorLeft">Other Bubble Text</label>
+          <input type="color" id="bubbleColorLeft" value="#232526">
+        </div>
+        <button type="submit" class="customise-save-btn">Save</button>
+      </form>
+      <p class="info" style="margin-top:18px;">Your choices will be used for your chat view only.</p>
+    </div>
+  </div>
+
+  <script>
+    // Load saved settings
+    const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
+    if(settings.bubbleBgRight) document.getElementById('bubbleBgRight').value = settings.bubbleBgRight;
+    if(settings.bubbleColorRight) document.getElementById('bubbleColorRight').value = settings.bubbleColorRight;
+    if(settings.bubbleBgLeft) document.getElementById('bubbleBgLeft').value = settings.bubbleBgLeft;
+    if(settings.bubbleColorLeft) document.getElementById('bubbleColorLeft').value = settings.bubbleColorLeft;
+
+    document.getElementById('customise-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const custom = {
+        bubbleBgRight: document.getElementById('bubbleBgRight').value,
+        bubbleColorRight: document.getElementById('bubbleColorRight').value,
+        bubbleBgLeft: document.getElementById('bubbleBgLeft').value,
+        bubbleColorLeft: document.getElementById('bubbleColorLeft').value,
+      };
+      localStorage.setItem('chatCustomisation', JSON.stringify(custom));
+      alert('Saved! Go to Chat to see your new style.');
+    });
+  </script>
+  <script src="js/chat.js"></script>
+  <script src="js/sidebar.js"></script>
+</body>
+</html>

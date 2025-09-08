@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One-on-One Chat</title>
-  <link rel="stylesheet" href="style.css">
+  <title>SSSB | Chat portal</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="chat-container">
-    <h2>Private Chat</h2>
-    <div id="chat-box" class="chat-box"></div>
-
-    <div class="input-container">
-      <input type="text" id="messageInput" placeholder="Type a message...">
-      <button id="sendBtn">Send</button>
-    </div>
+  <div class="login-container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p class="info">Only two users allowed.</p>
   </div>
 
-  <script src="script.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/sidebar.js"></script>
 </body>
 </html>
