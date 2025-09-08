@@ -18,8 +18,10 @@ const userNameEl = document.getElementById('user-name');
 if (userNameEl && user) userNameEl.textContent = user;
 
 if (window.location.pathname.includes('chat.html')) {
-  loadMessages();
-  setInterval(loadMessages, 1000);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadMessages();
+    setInterval(loadMessages, 1000);
+  });
 }
 
 // =======================
