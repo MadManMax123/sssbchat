@@ -6,7 +6,9 @@ if (window.location.pathname.includes('chat.html')) {
     window.location.href = 'index.html';
   } else {
     const userNameEl = document.getElementById('user-name');
-    if userNameEl) userNameEl.textContent = user;
+    if (userNameEl) userNameEl.textContent = user;
+
+    // ✅ Load messages immediately
     loadMessages();
     setInterval(loadMessages, 5000);
   }
@@ -17,24 +19,25 @@ if (window.location.pathname.includes('chat.html')) {
 // Logout
 function logout() {
   sessionStorage.clear();
+  window.location.href = 'index.html';
 }
 
 // CONFIG — replace with your URLs
 const webhookURL = "https://hook.us1.make.com/zlo4cpb5i98dr4gpict4c2bp2w0ah01y";   // Make.com webhook
-const sheetURL = "https://script.google.com/macros/s/AKfycbwNG3HF3KncJjbXO95nqm-sEXA1w7aMjFBrIbnK6bJQiXPI-YLrWQ9BrReVSDk02Fdn/exec";      // Apps Script Web App URL (doGet)
+const sheetURL = "https://script.google.com/macros/s/AKfycbwNG3HF3KncJjbXO95nqm-sEXA1w7aMjFBrIbnK6bJQiXPI-YLrWQ9BrReVSDk02Fdn/exec"; // Apps Script Web App URL (doGet)
 
 // Send a message
 async function sendMessage() {
-  const message = document.getElementById('message').value;
+  const inputEl = document.getElementById('message');
+  const message = inputEl.value.trim();
   if (!message) return;
 
   const payload = {
-    id: crypto.randomUUID(),  // generate unique ID client-side
+    id: crypto.randomUUID(),
     user: user,
     message: message
   };
 
-  // Send to Make.com webhook (which writes to Google Sheets)
   try {
     await fetch(webhookURL, {
       method: 'POST',
@@ -45,10 +48,7 @@ async function sendMessage() {
     console.error("Webhook error:", err);
   }
 
-  // Clear input
-  document.getElementById('message').value = '';
-
-  // Refresh chat after sending
+  inputEl.value = '';
   loadMessages();
 }
 
@@ -57,12 +57,11 @@ async function loadMessages() {
   const chatBox = document.getElementById('chat-box');
   if (!chatBox) return;
 
-  // 1. Preload from cache (localStorage)
+  // 1. Preload from cache
   const cached = localStorage.getItem('chatCache');
   if (cached) {
     try {
-      const cachedData = JSON.parse(cached);
-      renderMessages(cachedData, chatBox);
+      renderMessages(JSON.parse(cached), chatBox);
     } catch {}
   }
 
@@ -71,7 +70,7 @@ async function loadMessages() {
     const res = await fetch(sheetURL);
     const data = await res.json();
 
-    // Save to cache (keep only last 30 messages for speed)
+    // Save to cache (last 30 msgs)
     localStorage.setItem('chatCache', JSON.stringify(data.slice(-30)));
 
     renderMessages(data, chatBox);
@@ -80,7 +79,7 @@ async function loadMessages() {
   }
 }
 
-// Helper to render messages
+// Render messages
 function renderMessages(data, chatBox) {
   chatBox.innerHTML = '';
   data.forEach(item => {
@@ -100,7 +99,7 @@ function renderMessages(data, chatBox) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Apply chat bubble customisation from localStorage
+// Apply customisation from localStorage
 (function() {
   const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
   if (settings.bubbleBgRight)
