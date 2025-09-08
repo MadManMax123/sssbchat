@@ -14,10 +14,9 @@ function login() {
 
   if (users[username] && users[username] === password) {
     sessionStorage.setItem('user', username);
-    localStorage.setItem('localLogin', username); // use consistent key
+    localStorage.setItem('localLogin', username); // ✅ consistent
     window.location.href = 'chat.html';
   } else {
     alert('Invalid credentials.');
   }
 }
-
