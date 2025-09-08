@@ -1,27 +1,25 @@
 // =======================
 // Auto-login handling
 // =======================
-let user = sessionStorage.getItem('user');
 
-// Restore from localStorage if sessionStorage is empty
-if (!user) {
+// Restore login from localStorage if needed
+if (!sessionStorage.getItem('user')) {
   const cached = localStorage.getItem('localLogin');
   if (cached) {
-    user = cached;
-    sessionStorage.setItem('user', user);
+    sessionStorage.setItem('user', cached);
+  } else {
+    window.location.href = 'index.html';
   }
 }
 
-if (window.location.pathname.includes('chat.html')) {
-  if (!user) {
-    window.location.href = 'index.html';
-  } else {
-    const userNameEl = document.getElementById('user-name');
-    if (userNameEl) userNameEl.textContent = user;
+// Always update the username in the DOM
+const user = sessionStorage.getItem('user');
+const userNameEl = document.getElementById('user-name');
+if (userNameEl && user) userNameEl.textContent = user;
 
-    loadMessages();
-    setInterval(loadMessages, 5000);
-  }
+if (window.location.pathname.includes('chat.html')) {
+  loadMessages();
+  setInterval(loadMessages, 1000);
 }
 
 // =======================
