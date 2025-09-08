@@ -18,7 +18,7 @@ const userNameEl = document.getElementById('user-name');
 if (userNameEl && user) userNameEl.textContent = user;
 
 if (window.location.pathname.includes('chat.html')) {
-  // ✅ Load messages as soon as page opens
+  // ✅ Call loadMessages immediately on page load
   loadMessages();
   setInterval(loadMessages, 1000);
 }
