@@ -13,8 +13,8 @@ function logout() {
 }
 
 // CONFIG — replace with your URLs
-const webhookURL = "YOUR_MAKE_WEBHOOK_URL";   // Make.com webhook
-const sheetURL = "YOUR_APPS_SCRIPT_URL";      // Apps Script Web App URL (doGet)
+const webhookURL = "https://hook.us1.make.com/zlo4cpb5i98dr4gpict4c2bp2w0ah01y";   // Make.com webhook
+const sheetURL = "https://script.google.com/macros/s/AKfycbwNG3HF3KncJjbXO95nqm-sEXA1w7aMjFBrIbnK6bJQiXPI-YLrWQ9BrReVSDk02Fdn/exec";      // Apps Script Web App URL (doGet)
 
 // Send a message
 async function sendMessage() {
