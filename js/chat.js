@@ -1,7 +1,9 @@
-// Ensure user is logged in and set user name
+// =======================
+// Auto-login handling
+// =======================
 let user = sessionStorage.getItem('user');
 
-// ✅ Restore from localStorage if needed
+// Restore from localStorage if sessionStorage is empty
 if (!user) {
   const cached = localStorage.getItem('localLogin');
   if (cached) {
@@ -22,18 +24,23 @@ if (window.location.pathname.includes('chat.html')) {
   }
 }
 
-
+// =======================
 // Logout
+// =======================
 function logout() {
   sessionStorage.clear();
   window.location.href = 'index.html';
 }
 
-// CONFIG — replace with your URLs
+// =======================
+// CONFIG
+// =======================
 const webhookURL = "https://hook.us1.make.com/zlo4cpb5i98dr4gpict4c2bp2w0ah01y";   // Make.com webhook
 const sheetURL = "https://script.google.com/macros/s/AKfycbwNG3HF3KncJjbXO95nqm-sEXA1w7aMjFBrIbnK6bJQiXPI-YLrWQ9BrReVSDk02Fdn/exec"; // Apps Script Web App URL (doGet)
 
+// =======================
 // Send a message
+// =======================
 async function sendMessage() {
   const inputEl = document.getElementById('message');
   const message = inputEl.value.trim();
@@ -59,7 +66,9 @@ async function sendMessage() {
   loadMessages();
 }
 
-// Load messages from Google Sheets JSON
+// =======================
+// Load messages
+// =======================
 async function loadMessages() {
   const chatBox = document.getElementById('chat-box');
   if (!chatBox) return;
@@ -73,7 +82,9 @@ async function loadMessages() {
   }
 }
 
+// =======================
 // Render messages
+// =======================
 function renderMessages(data, chatBox) {
   chatBox.innerHTML = '';
   data.forEach(item => {
@@ -93,7 +104,9 @@ function renderMessages(data, chatBox) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Apply customisation from localStorage (if set)
+// =======================
+// Apply customisation (optional)
+// =======================
 (function() {
   const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
   if (settings.bubbleBgRight)

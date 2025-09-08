@@ -1,3 +1,4 @@
+// Define valid users
 const users = {
   "Sneha Sarkar": "rai",
   "Satyaki Bandopadhyay": "bittu"
@@ -12,9 +13,10 @@ function login() {
     return;
   }
 
+  // Validate username + password
   if (users[username] && users[username] === password) {
-    sessionStorage.setItem('user', username);
-    localStorage.setItem('localLogin', username); // ✅ consistent
+    sessionStorage.setItem('user', username);       // session login
+    localStorage.setItem('localLogin', username);   // persistent login
     window.location.href = 'chat.html';
   } else {
     alert('Invalid credentials.');
