@@ -1,10 +1,17 @@
-// Ensure user is logged in
-const user = sessionStorage.getItem('user');
-if (!user && window.location.pathname.includes('chat.html')) {
-  window.location.href = 'index.html';
+// Ensure user is logged in and set user name
+let user = null;
+if (window.location.pathname.includes('chat.html')) {
+  user = sessionStorage.getItem('user');
+  if (!user) {
+    window.location.href = 'index.html';
+  } else {
+    const userNameEl = document.getElementById('user-name');
+    if userNameEl) userNameEl.textContent = user;
+    loadMessages();
+    setInterval(loadMessages, 5000);
+  }
 } else {
-  const userNameEl = document.getElementById('user-name');
-  if (userNameEl) userNameEl.textContent = user;
+  user = sessionStorage.getItem('user');
 }
 
 // Logout
@@ -91,12 +98,6 @@ function renderMessages(data, chatBox) {
   });
 
   chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// Auto-refresh chat every 5s
-if (window.location.pathname.includes('chat.html')) {
-  loadMessages();
-  setInterval(loadMessages, 5000);
 }
 
 // Apply chat bubble customisation from localStorage
