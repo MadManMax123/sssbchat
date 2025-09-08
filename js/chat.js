@@ -52,27 +52,14 @@ async function sendMessage() {
   loadMessages();
 }
 
-// Load messages from Google Sheets JSON, with cache preload
+// Load messages from Google Sheets JSON
 async function loadMessages() {
   const chatBox = document.getElementById('chat-box');
   if (!chatBox) return;
 
-  // 1. Preload from cache
-  const cached = localStorage.getItem('chatCache');
-  if (cached) {
-    try {
-      renderMessages(JSON.parse(cached), chatBox);
-    } catch {}
-  }
-
-  // 2. Fetch latest from server
   try {
     const res = await fetch(sheetURL);
     const data = await res.json();
-
-    // Save to cache (last 30 msgs)
-    localStorage.setItem('chatCache', JSON.stringify(data.slice(-30)));
-
     renderMessages(data, chatBox);
   } catch (err) {
     console.error("Error loading messages:", err);
@@ -99,7 +86,7 @@ function renderMessages(data, chatBox) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Apply customisation from localStorage
+// Apply customisation from localStorage (if set)
 (function() {
   const settings = JSON.parse(localStorage.getItem('chatCustomisation')) || {};
   if (settings.bubbleBgRight)
